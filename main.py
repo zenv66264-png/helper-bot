@@ -8,71 +8,56 @@ bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())
 
 @bot.event
 async def on_ready():
-    print(f"Bot online: {bot.user.name}")
+    print(f"✅ Bot Online: {bot.user.name}")
 
-@bot.command(name="say")
+@bot.command()
 async def say(ctx, *, message):
     await ctx.message.delete()
     await ctx.send(message)
 
-@bot.command(name="about")
+@bot.command()
 async def about(ctx):
-    embed = discord.Embed(
-        title="60 MIRAGE",
-        description="Street raised, self-made. Seen it all, done it all.",
-        color=discord.Color.dark_red()
-    )
-    embed.add_field(name="Code", value="Loyalty > everything\nNo cap, no fakes", inline=False)
-    embed.add_field(name="Motto", value="Silent moves, loud results", inline=False)
-    embed.set_footer(text="Trust few, fear none")
-    await ctx.send(embed=embed)
+    e = discord.Embed(title="60 MIRAGE", description="Street raised, self-made. Seen it all, done it all.", color=discord.Color.dark_red())
+    e.add_field(name="Code", value="Loyalty > everything\nNo cap, no fakes", inline=False)
+    e.add_field(name="Motto", value="Silent moves, loud results", inline=False)
+    e.set_footer(text="Trust few, fear none")
+    await ctx.send(embed=e)
 
-@bot.command(name="code")
+@bot.command()
 async def code(ctx):
-    embed = discord.Embed(
-        title="THE CODE",
-        description="Live right or die wrong",
-        color=discord.Color.black()
-    )
-    embed.add_field(name="•", value="Small circle, heavy trust", inline=False)
-    embed.add_field(name="•", value="Speak less, let work show", inline=False)
-    embed.add_field(name="•", value="Respect is earned, not given", inline=False)
-    embed.set_footer(text="60 Mirage | Out of sight, never out of mind")
-    await ctx.send(embed=embed)
+    e = discord.Embed(title="THE CODE", description="Live right or die wrong", color=discord.Color.black())
+    e.add_field(name="•", value="Small circle, heavy trust", inline=False)
+    e.add_field(name="•", value="Speak less, let work show", inline=False)
+    e.add_field(name="•", value="Respect is earned, not given", inline=False)
+    e.set_footer(text="60 Mirage | Out of sight, never out of mind")
+    await ctx.send(embed=e)
 
-@bot.command(name="embed")
-async def custom_embed(ctx, title, *, content):
-    embed = discord.Embed(
-        title=title.upper(),
-        description=content,
-        color=discord.Color.dark_grey()
-    )
-    await ctx.send(embed=embed)
+@bot.command()
+async def embed(ctx, title, *, content):
+    e = discord.Embed(title=title.upper(), description=content, color=discord.Color.dark_grey())
+    await ctx.send(embed=e)
 
-@bot.command(name="help")
-async def help_cmd(ctx):
-    embed = discord.Embed(
-        title="COMMANDS",
-        color=discord.Color.blue()
-    )
-    embed.add_field(name="!say [text]", value="Bot repeats your words", inline=False)
-    embed.add_field(name="!about", value="Info about 60 Mirage", inline=False)
-    embed.add_field(name="!code", value="Street rules", inline=False)
-    embed.add_field(name="!embed [title] [text]", value="Make your own box", inline=False)
-    await ctx.send(embed=embed)
+@bot.command()
+async def help(ctx):
+    e = discord.Embed(title="COMMANDS", color=discord.Color.blue())
+    e.add_field(name="!say", value="Repeat your text", inline=False)
+    e.add_field(name="!about", value="Bot info", inline=False)
+    e.add_field(name="!code", value="Street rules", inline=False)
+    e.add_field(name="!embed", value="Custom message box", inline=False)
+    await ctx.send(embed=e)
 
-app = Flask('')
+app = Flask(__name__)
 @app.route('/')
 def home():
-    return "Bot running"
+    return "Bot Running ✅"
 
 def run():
-    port = int(os.environ.get("PORT", 8080))
+    port = int(os.environ.get("PORT", 10000))
     app.run(host="0.0.0.0", port=port)
 
 def keep_alive():
-    Thread(target=run).start()
+    Thread(target=run, daemon=True).start()
 
 keep_alive()
 
-bot.run(os.getenv("MTUxNTc2MzMzNDkxMjQxMzg3Ng.G6yWWf.TwA5DdQIEoab5Ap5qhN02Phafb0T5XchDyrolY"))
+bot.run(os.getenv("MTUxNTc2MzMzNDkxMjQxMzg3Ng.G6yWWf.TwA5DdQIEoab5Ap5qhN02Phafb0T5XchDyrolY"), reconnect=True)
