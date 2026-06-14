@@ -4,11 +4,12 @@ import os
 from flask import Flask
 from threading import Thread
 
-bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())
+intents = discord.Intents.all()
+bot = commands.Bot(command_prefix="!", intents=intents)
 
 @bot.event
 async def on_ready():
-    print(f"✅ Bot Online: {bot.user.name}")
+    print(f"✅ Bot connected as: {bot.user.name}")
 
 @bot.command()
 async def say(ctx, *, message):
@@ -40,16 +41,16 @@ async def embed(ctx, title, *, content):
 @bot.command()
 async def help(ctx):
     e = discord.Embed(title="COMMANDS", color=discord.Color.blue())
-    e.add_field(name="!say", value="Repeat your text", inline=False)
+    e.add_field(name="!say [text]", value="Repeat your message", inline=False)
     e.add_field(name="!about", value="Bot info", inline=False)
     e.add_field(name="!code", value="Street rules", inline=False)
-    e.add_field(name="!embed", value="Custom message box", inline=False)
+    e.add_field(name="!embed [title] [text]", value="Custom box", inline=False)
     await ctx.send(embed=e)
 
 app = Flask(__name__)
 @app.route('/')
 def home():
-    return "Bot Running ✅"
+    return "Bot running ✅"
 
 def run():
     port = int(os.environ.get("PORT", 10000))
