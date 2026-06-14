@@ -1,40 +1,64 @@
 import discord
-from discord import app_commands
+from discord.ext import commands
 import os
+from flask import Flask
+from threading import Thread
 
-TOKEN = os.getenv("MTUxNTc2MzMzNDkxMjQxMzg3Ng.G6yWWf.TwA5DdQIEoab5Ap5qhN02Phafb0T5XchDyrolY")  # Put your bot token in Render Environment Variables
-
-class MyBot(discord.Client):
-    def __init__(self):
-        intents = discord.Intents.default()
-        super().__init__(intents=intents)
-        self.tree = app_commands.CommandTree(self)
-
-    async def setup_hook(self):
-        await self.tree.sync()
-        print("Slash commands synced!")
-
-bot = MyBot()
+intents = discord.Intents.all()
+bot = commands.Bot(command_prefix="!", intents=intents)
 
 @bot.event
 async def on_ready():
-    print(f"Logged in as {bot.user}")
+    print(f"✅ Bot connected as: {bot.user.name}")
 
-@bot.tree.command(name="ping", description="Check bot latency")
-async def ping(interaction: discord.Interaction):
-    await interaction.response.send_message(
-        f"🏓 Pong! {round(bot.latency * 1000)}ms"
-    )
+@bot.command()
+async def say(ctx, *, message):
+    await ctx.message.delete()
+    await ctx.send(message)
 
-@bot.tree.command(name="hello", description="Say hello")
-async def hello(interaction: discord.Interaction):
-    await interaction.response.send_message(
-        f"Hello {interaction.user.mention}! 👋"
-    )
+@bot.command()
+async def about(ctx):
+    e = discord.Embed(title="60 MIRAGE", description="Street raised, self-made. Seen it all, done it all.", color=discord.Color.dark_red())
+    e.add_field(name="Code", value="Loyalty > everything\nNo cap, no fakes", inline=False)
+    e.add_field(name="Motto", value="Silent moves, loud results", inline=False)
+    e.set_footer(text="Trust few, fear none")
+    await ctx.send(embed=e)
 
-@bot.tree.command(name="say", description="Make the bot say something")
-@app_commands.describe(message="Message to send")
-async def say(interaction: discord.Interaction, message: str):
-    await interaction.response.send_message(message)
+@bot.command()
+async def code(ctx):
+    e = discord.Embed(title="THE CODE", description="Live right or die wrong", color=discord.Color.black())
+    e.add_field(name="•", value="Small circle, heavy trust", inline=False)
+    e.add_field(name="•", value="Speak less, let work show", inline=False)
+    e.add_field(name="•", value="Respect is earned, not given", inline=False)
+    e.set_footer(text="60 Mirage | Out of sight, never out of mind")
+    await ctx.send(embed=e)
 
-bot.run(TOKEN)
+@bot.command()
+async def embed(ctx, title, *, content):
+    e = discord.Embed(title=title.upper(), description=content, color=discord.Color.dark_grey())
+    await ctx.send(embed=e)
+
+@bot.command()
+async def help(ctx):
+    e = discord.Embed(title="COMMANDS", color=discord.Color.blue())
+    e.add_field(name="!say [text]", value="Repeat your message", inline=False)
+    e.add_field(name="!about", value="Bot info", inline=False)
+    e.add_field(name="!code", value="Street rules", inline=False)
+    e.add_field(name="!embed [title] [text]", value="Custom box", inline=False)
+    await ctx.send(embed=e)
+
+app = Flask(__name__)
+@app.route('/')
+def home():
+    return "Bot running ✅"
+
+def run():
+    port = int(os.environ.get("PORT", 10000))
+    app.run(host="0.0.0.0", port=port)
+
+def keep_alive():
+    Thread(target=run, daemon=True).start()
+
+keep_alive()
+
+bot.run(os.getenv("MTUxNTc2MzMzNDkxMjQxMzg3Ng.G6yWWf.TwA5DdQIEoab5Ap5qhN02Phafb0T5XchDyrolY"), reconnect=True)
