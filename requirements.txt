@@ -1,2 +1,12 @@
 discord.py==2.3.2
 flask==2.3.3
+audioop-lts==0.2.1
+```[[__LINK_ICON]](https://github.com/Rapptz/discord.py/issues/10065?f_link_type=f_linkinlinenote&flow_extra=eyJpbmxpbmVfZGlzcGxheV9wb3NpdGlvbiI6MCwiZG9jX3Bvc2l0aW9uIjowLCJkb2NfaWQiOiI3ZGQxMmZlODc3ZmE4ZWQwLWMyYjFmYjRiMzgyY2ZhMzYifQ%3D%3D "[__LINK_ICON]")
+
+---
+
+## 📝 OPTION 2 (If still fails): Use newer discord.py
+```txt
+discord.py==2.4.0
+flask==2.3.3
+audioop-lts==0.2.1
