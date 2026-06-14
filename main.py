@@ -8,7 +8,7 @@ bot = commands.Bot(command_prefix="!", intents=discord.Intents.all())
 
 @bot.event
 async def on_ready():
-    print(f"✅ Bot online | Logged in as: {bot.user.name}")
+    print(f"Bot online: {bot.user.name}")
 
 @bot.command(name="say")
 async def say(ctx, *, message):
@@ -52,22 +52,23 @@ async def custom_embed(ctx, title, *, content):
 @bot.command(name="help")
 async def help_cmd(ctx):
     embed = discord.Embed(
-        title="📜 COMMAND LIST",
+        title="COMMANDS",
         color=discord.Color.blue()
     )
-    embed.add_field(name="!say [text]", value="Bot repeats your message", inline=False)
+    embed.add_field(name="!say [text]", value="Bot repeats your words", inline=False)
     embed.add_field(name="!about", value="Info about 60 Mirage", inline=False)
-    embed.add_field(name="!code", value="The street code", inline=False)
-    embed.add_field(name="!embed [title] [message]", value="Make your own custom embed", inline=False)
+    embed.add_field(name="!code", value="Street rules", inline=False)
+    embed.add_field(name="!embed [title] [text]", value="Make your own box", inline=False)
     await ctx.send(embed=embed)
 
 app = Flask('')
 @app.route('/')
 def home():
-    return "Bot is running ✅"
+    return "Bot running"
 
 def run():
-    app.run(host="0.0.0.0", port=8080)
+    port = int(os.environ.get("PORT", 8080))
+    app.run(host="0.0.0.0", port=port)
 
 def keep_alive():
     Thread(target=run).start()
