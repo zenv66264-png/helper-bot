@@ -38,13 +38,14 @@ async def embed(ctx, title, *, content):
     e = discord.Embed(title=title.upper(), description=content, color=discord.Color.dark_grey())
     await ctx.send(embed=e)
 
-@bot.command()
-async def help(ctx):
+# Renamed from "help" to "commands" to avoid conflict
+@bot.command(name="commands")
+async def commands_list(ctx):
     e = discord.Embed(title="COMMANDS", color=discord.Color.blue())
     e.add_field(name="!say [text]", value="Repeat your message", inline=False)
-    e.add_field(name="!about", value="Bot info", inline=False)
+    e.add_field(name="!about", value="Info about 60 Mirage", inline=False)
     e.add_field(name="!code", value="Street rules", inline=False)
-    e.add_field(name="!embed [title] [text]", value="Custom box", inline=False)
+    e.add_field(name="!embed [title] [text]", value="Make custom message box", inline=False)
     await ctx.send(embed=e)
 
 app = Flask(__name__)
@@ -53,7 +54,7 @@ def home():
     return "Bot running ✅"
 
 def run():
-    port = int(os.environ.get("PORT", 10000))
+    port = int(os.environ.get("PORT", 8080))
     app.run(host="0.0.0.0", port=port)
 
 def keep_alive():
